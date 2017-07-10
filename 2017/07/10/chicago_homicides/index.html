@@ -144,6 +144,29 @@ ax.set_yticklabels(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sat
 
 <p><img src="/chicago_homicides_files/chicago_homicides_9_1.png" alt="png" /></p>
 
+<h2 id="2016-homicide-heatmap">2016 Homicide Heatmap</h2>
+
+<pre><code class="language-python">import gmaps
+import math
+
+gmaps.configure(api_key=&quot;############################&quot;)
+
+raw = data[(data['Primary Type'] == 'HOMICIDE') &amp; (data['Year'] == 2016)]
+
+locations = []
+for index, row in raw.iterrows():
+    lat = float(row['Latitude'])
+    long = float(row['Longitude'])
+    if not math.isnan(lat) and not math.isnan(long):
+        locations.append((lat, long))
+                    
+fig = gmaps.figure()
+fig.add_layer(gmaps.heatmap_layer(locations))
+fig
+</code></pre>
+
+<p><img src="/chicago_homicides_files/map.png" alt="png" /></p>
+
 </div>
 
         <footer class="post-footer clearfix">
