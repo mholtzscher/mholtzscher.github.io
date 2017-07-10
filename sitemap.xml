@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://mholtzscher.github.com/2017/07/10/good-to-great/</loc>
+    <lastmod>2017-07-10T15:15:29-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mholtzscher.github.com/</loc>
+    <lastmod>2017-07-10T15:15:29-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mholtzscher.github.com/post/</loc>
+    <lastmod>2017-07-10T15:15:29-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://mholtzscher.github.com/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
