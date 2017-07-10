@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Test Post Please Ignore &middot; Michael Holtzscher</title>
-        <meta name="description" content="This is my first post here and I hope to publish often! Check back later!">
+        <title>Chicago Homicide Data &middot; Michael Holtzscher</title>
+        <meta name="description" content="I have started learning Python and Pandas recently and was looking for a good dataset to play with to get my feet wet. I chose the Chicago crime data because it is large, structured, and mostly complete. The fact that little data is missing makes this a great way to get started exploring. The size also presents some fun challenges since it takes a decent amount of RAM(and patience) to load the ~63 million rows.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
         <meta name="generator" content="Hugo 0.25.1" />
@@ -66,7 +66,7 @@
 <div class="container">
     <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
         <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Test Post Please Ignore</h1>
+    <h1 class="post-title" itemprop="name headline">Chicago Homicide Data</h1>
     
     <p class="post-date">
         <span>Published <time datetime="2017-07-10" itemprop="datePublished">Mon, Jul 10, 2017</time></span>
@@ -82,7 +82,67 @@
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-    <p>This is my first post here and I hope to publish often! Check back later!</p>
+    
+
+<p>I have started learning Python and Pandas recently and was looking for a good dataset to play with to get my feet wet. I chose the Chicago crime data because
+it is large, structured, and mostly complete. The fact that little data is missing makes this a great way to get started exploring. The size also
+presents some fun challenges since it takes a decent amount of RAM(and patience) to load the ~63 million rows.</p>
+
+<p>Data is loaded from the <a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2">Chicago Data Portal</a>.</p>
+
+<h2 id="preparing-the-data">Preparing The Data</h2>
+
+<h3 id="2001-to-july-6-2017">2001 to July 6, 2017</h3>
+
+<pre><code class="language-python">import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+</code></pre>
+
+<pre><code class="language-python"># Loading in chunks cuts down load time significantly
+tp = pd.read_csv('crimes.csv', iterator=True, chunksize=100000, parse_dates=['Date'])
+%time data = pd.concat(tp, ignore_index=True)
+</code></pre>
+
+<pre><code class="language-python"># Calculate some extra columns
+data['month'] = data['Date'].dt.month
+# 0 = Monday, 6 = Sunday
+data['weekday'] = data['Date'].dt.weekday
+</code></pre>
+
+<h2 id="homicides-per-year">Homicides Per Year</h2>
+
+<p>Homicides per each year. 2017 is partial data.</p>
+
+<pre><code class="language-python">ax = data[data['Primary Type'] == 'HOMICIDE'].groupby('Year').Year.count().plot.bar(title='Homicides Per Year')
+ax.set_xlabel('Year')
+ax.set_ylabel('Homicides')
+</code></pre>
+
+<p><img src="/chicago_homicides_files/chicago_homicides_5_1.png" alt="png" /></p>
+
+<h2 id="homicides-in-2016-by-month">Homicides In 2016 By Month</h2>
+
+<pre><code class="language-python">w = data[(data['Primary Type'] == 'HOMICIDE') &amp; (data['Year'] == 2016)]
+ax = w.groupby('month').month.count().plot.barh(title='Homicides By Month In 2016')
+ax.set_ylabel('Months')
+ax.set_xlabel('Homicides')
+months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+ax.set_yticklabels(months)
+</code></pre>
+
+<p><img src="/chicago_homicides_files/chicago_homicides_7_1.png" alt="png" /></p>
+
+<h2 id="homicides-in-2016-by-day-of-the-week">Homicides In 2016 By Day Of The Week</h2>
+
+<pre><code class="language-python">w = data[(data['Primary Type'] == 'HOMICIDE') &amp; (data['Year'] == 2016)]
+ax = w.groupby('weekday').weekday.count().plot.barh(title='Homicides By Day Of The Week In 2016')
+ax.set_ylabel('Day Of The Week')
+ax.set_xlabel('Homicides')
+ax.set_yticklabels(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
+</code></pre>
+
+<p><img src="/chicago_homicides_files/chicago_homicides_9_1.png" alt="png" /></p>
 
 </div>
 
@@ -91,7 +151,7 @@
 
     <div class="share">
         
-            <a class="icon-twitter" href="https://twitter.com/share?text=Test%20Post%20Please%20Ignore&url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fgood-to-great%2f"
+            <a class="icon-twitter" href="https://twitter.com/share?text=Chicago%20Homicide%20Data&url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fchicago_homicides%2f"
                 onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fa fa-twitter"></i>
                 <span class="hidden">Twitter</span>
@@ -99,7 +159,7 @@
         
 
         
-            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fgood-to-great%2f"
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fchicago_homicides%2f"
                 onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
                 <i class="fa fa-facebook"></i>
                 <span class="hidden">Facebook</span>
@@ -107,7 +167,7 @@
         
 
         
-            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fgood-to-great%2f"
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f10%2fchicago_homicides%2f"
               onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
               <i class="fa fa-google-plus"></i>
                 <span class="hidden">Google+</span>

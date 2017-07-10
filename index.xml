@@ -13,12 +13,21 @@
     
     
     <item>
+      <title>Chicago Homicide Data</title>
+      <link>https://mholtzscher.github.io/2017/07/10/chicago_homicides/</link>
+      <pubDate>Mon, 10 Jul 2017 15:15:29 -0500</pubDate>
+      
+      <guid>https://mholtzscher.github.io/2017/07/10/chicago_homicides/</guid>
+      <description>I have started learning Python and Pandas recently and was looking for a good dataset to play with to get my feet wet. I chose the Chicago crime data because it is large, structured, and mostly complete. The fact that little data is missing makes this a great way to get started exploring. The size also presents some fun challenges since it takes a decent amount of RAM(and patience) to load the ~63 million rows.</description>
+    </item>
+    
+    <item>
       <title>Test Post Please Ignore</title>
       <link>https://mholtzscher.github.io/2017/07/10/good-to-great/</link>
       <pubDate>Mon, 10 Jul 2017 15:15:29 -0500</pubDate>
       
       <guid>https://mholtzscher.github.io/2017/07/10/good-to-great/</guid>
-      <description>Blah Blah Blah</description>
+      <description>This is my first post here and I hope to publish often! Check back later!</description>
     </item>
     
   </channel>
