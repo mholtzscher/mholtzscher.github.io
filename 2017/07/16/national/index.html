@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>US National Baby Names &middot; Michael Holtzscher</title>
+        <meta name="description" content="The data for this project is taken from Kaggle US Baby Names dataset. It consists of Social Security Administration baby naming data from 1880 to 2014. Note that only names with at least 5 babies born in the same year (/ state) are included in this dataset for privacy.
+Preparing The Data import pandas as pd import numpy as np import matplotlib.pyplot as plt %matplotlib inline font_size = 16  df = pd.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://mholtzscher.github.io/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+    </head>
+    <body>
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-75497945-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mholtzscher.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/mholtzscher">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mholtzscher">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://www.linkedin.com/in/michael-holtzscher-813a79117/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:mholtz@protonmail.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">US National Baby Names</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2017-07-16" itemprop="datePublished">Sun, Jul 16, 2017</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="" itemprop="url" rel="author">Michael Holtzscher</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<p>The data for this project is taken from Kaggle <a href="https://www.kaggle.com/kaggle/us-baby-names">US Baby Names</a> dataset. It consists of Social Security Administration baby naming data from 1880 to 2014. Note that only names with at least 5 babies born in the same year (/ state) are included in this dataset for privacy.</p>
+
+<h3 id="preparing-the-data">Preparing The Data</h3>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+font_size = 16
+</code></pre>
+
+<pre><code class="language-python">df = pd.read_csv('NationalNames.csv')
+df.head()
+</code></pre>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Year</th>
+      <th>Gender</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Mary</td>
+      <td>1880</td>
+      <td>F</td>
+      <td>7065</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Anna</td>
+      <td>1880</td>
+      <td>F</td>
+      <td>2604</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Emma</td>
+      <td>1880</td>
+      <td>F</td>
+      <td>2003</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Elizabeth</td>
+      <td>1880</td>
+      <td>F</td>
+      <td>1939</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Minnie</td>
+      <td>1880</td>
+      <td>F</td>
+      <td>1746</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="births-per-year">Births Per Year</h3>
+
+<p>Note: This plot is not a completely accurate representation of the number of births in the US since our data only accounts for names where at least 5 babies were given that name. This chart is to just get a basic understanding of the number of births.</p>
+
+<pre><code class="language-python">total_per_year = df.groupby('Year').sum()
+axis = total_per_year['Count'].plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Births Per Year(Estimated)', fontsize=30)
+</code></pre>
+
+<p><img src="/national_files/national_5_1.png" alt="png" /></p>
+
+<h3 id="births-per-year-by-gender">Births Per Year By Gender</h3>
+
+<p>Note: This plot is not a completely accurate representation of the number of births in the US since our data only accounts for names where at least 5 babies were given that name. This chart is to just get a basic understanding of the number of births and differences by gender.</p>
+
+<pre><code class="language-python">gender = df.groupby(['Year', 'Gender']).sum()
+axis = gender['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Births Per Year By Gender', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_7_1.png" alt="png" /></p>
+
+<h3 id="proportion-of-male-to-female-births-per-year">Proportion of Male to Female Births Per Year</h3>
+
+<p>I was curious to see the difference in numbers between male and female births. I expected to be near <sup>50</sup>&frasl;<sub>50</sub> but this was not the case. This sparked some interesting questions of &ldquo;Why are there more males born in the last 70 years?&rdquo; and &ldquo;Why the flip around the 1940s?&rdquo; Perhaps this will be a future exploration.</p>
+
+<pre><code class="language-python">ratio = df.groupby(['Year', 'Gender']).sum()
+ratio = ratio.unstack()
+ratio['ratio'] = ratio['Count'].apply(lambda row: row['M'] / row['F'], axis=1)
+axis = ratio['ratio'].plot.line(figsize=(20,10), grid=True, fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Proportion(Male/Female)', fontsize=30)
+axis.set_title('Proportion of Male to Female Births Per Year', fontsize=30)
+</code></pre>
+
+<p><img src="/national_files/national_9_1.png" alt="png" /></p>
+
+<h3 id="top-10-names-all-time">Top 10 Names All Time</h3>
+
+<pre><code class="language-python">top_names = df.groupby('Name').sum()
+top_names = top_names['Count'].sort_values(ascending=False)[:10]
+top_10 = []
+for i in top_names.iteritems():
+    top_10.append(i[0])
+
+top_names = df[df['Name'].isin(top_10)].groupby(['Year', 'Name']).sum()
+axis = top_names['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Top 10 Names (1880-2014)', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_11_1.png" alt="png" /></p>
+
+<h3 id="top-10-female-names-all-time">Top 10 Female Names All Time</h3>
+
+<pre><code class="language-python">top_names = df[df['Gender'] == 'F'].groupby('Name').sum()
+top_names = top_names['Count'].sort_values(ascending=False)[:10]
+top_10 = []
+for i in top_names.iteritems():
+    top_10.append(i[0])
+
+top_names = df[df['Name'].isin(top_10)].groupby(['Year', 'Name']).sum()
+axis = top_names['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Top 10 Female Names (1880-2014)', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_13_1.png" alt="png" /></p>
+
+<h3 id="top-10-male-names-all-time">Top 10 Male Names All Time</h3>
+
+<pre><code class="language-python">top_names = df[df['Gender'] == 'M'].groupby('Name').sum()
+top_names = top_names['Count'].sort_values(ascending=False)[:10]
+top_10 = []
+for i in top_names.iteritems():
+    top_10.append(i[0])
+
+top_names = df[df['Name'].isin(top_10)].groupby(['Year', 'Name']).sum()
+axis = top_names['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Top 10 Male Names (1880-2014)', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_15_1.png" alt="png" /></p>
+
+<h3 id="diversity-in-names">Diversity In Names</h3>
+
+<p>Upon looking at the top 10 names I noticed how they dropped off as they approached today. This was interesting considering that births per year have trended up consistently. This plot looks at the total number of names used each year.</p>
+
+<pre><code class="language-python">import math
+def f(x):
+    if not math.isnan(x):
+        return 1
+
+diversity = df.groupby(['Name', 'Year']).sum()
+diversity = diversity.unstack().applymap(f)
+diversity = diversity.sum(axis=0)
+axis = diversity['Count'].plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Number of Names Used', fontsize=30)
+axis.set_title('Diversity In Names', fontsize=30)
+</code></pre>
+
+<p><img src="/national_files/national_17_1.png" alt="png" /></p>
+
+<h3 id="most-consistent-names">Most Consistent Names</h3>
+
+<p>After seeing the variety of names great increase I was curious if there were any names that were consistently used. This plot looks at the 10 names with the lowest standard deviation over the full time range.</p>
+
+<pre><code class="language-python">consistent = df.groupby(['Name', 'Year']).sum()
+consistent = consistent.unstack().std(axis=1, skipna=False).sort_values().dropna()[:10]
+
+top_10 = list(consistent.index.values)
+
+con_names = df[df['Name'].isin(top_10)].groupby(['Year', 'Name']).sum()
+axis = con_names['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Most Consistent Names', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_19_1.png" alt="png" /></p>
+
+<h3 id="least-consistent-names">Least Consistent Names</h3>
+
+<p>This plot looks at the 10 names with the greatest standard deviation over the full time range.</p>
+
+<pre><code class="language-python">consistent = df.groupby(['Name', 'Year']).sum()
+consistent = consistent.unstack().std(axis=1, skipna=False).sort_values().dropna()[-10:]
+
+top_10 = list(consistent.index.values)
+
+con_names = df[df['Name'].isin(top_10)].groupby(['Year', 'Name']).sum()
+axis = con_names['Count'].unstack().plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Least Consistent Names', fontsize=30)
+axis.legend(fontsize=font_size)
+</code></pre>
+
+<p><img src="/national_files/national_21_1.png" alt="png" /></p>
+
+<h3 id="all-the-michaels">All The Michaels</h3>
+
+<p>Just for fun what is the history of my name.</p>
+
+<pre><code class="language-python">michael = df[df['Name'] == 'Michael'].groupby('Year').sum()
+axis = michael['Count'].plot.line(figsize=(20,10), fontsize=font_size)
+axis.set_xlabel('Year', fontsize=30)
+axis.set_ylabel('Births', fontsize=30)
+axis.set_title('Babies Named Michael By Year', fontsize=30)
+</code></pre>
+
+<p><img src="/national_files/national_23_1.png" alt="png" /></p>
+
+<hr />
+
+<p>The Jupyter Notebook for this work can be found on <a href="https://github.com/mholtzscher/baby-names-analysis/blob/master/national.ipynb">GitHub</a>.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=US%20National%20Baby%20Names&url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f16%2fnational%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f16%2fnational%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f16%2fnational%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://mholtzscher.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+        <script src="https://mholtzscher.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://mholtzscher.github.io/js/scripts.js"></script>
+    </body>
+</html>
+
