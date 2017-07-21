@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>2016 US Presedential Election Contributions (Part 1) &middot; Michael Holtzscher</title>
+        <meta name="description" content="I recently came across this dataset from the Federal Election Commission and wanted to explore it a bit to see how money affected the election. Each plot aims to try and answer a question that I thought of while looking through the available data. This post is part 1 of my exploration and visualization of this dataset.
+Data is from the FEC
+import pandas as pd import numpy as np import plotly.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://mholtzscher.github.io/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+    </head>
+    <body>
+        
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-75497945-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mholtzscher.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/mholtzscher">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mholtzscher">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://www.linkedin.com/in/michael-holtzscher-813a79117/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:mholtz@protonmail.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">2016 US Presedential Election Contributions (Part 1)</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2017-07-21" itemprop="datePublished">Fri, Jul 21, 2017</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="" itemprop="url" rel="author">Michael Holtzscher</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<p>I recently came across this dataset from the Federal Election Commission and wanted to explore it a bit to see how money affected the election. Each plot aims to try and answer a question that I thought of while looking through the available data. This post is part 1 of my exploration and visualization of this dataset.</p>
+
+<p>Data is from the <a href="http://classic.fec.gov/disclosurep/PDownload.do">FEC</a></p>
+
+<pre><code class="language-python">import pandas as pd
+import numpy as np
+import plotly.plotly as py
+import plotly.figure_factory as ff
+import plotly.graph_objs as go
+import plotly.offline as offline
+import cufflinks as cf
+</code></pre>
+
+<pre><code class="language-python">cf.set_config_file(theme='polar')
+cf.go_online()
+</code></pre>
+
+<h3 id="preparing-the-data">Preparing The Data</h3>
+
+<pre><code class="language-python">url = 'https://storage.googleapis.com/mholtzscher-datasets/2016%20FEC%20Presidential/contributors.csv'
+df = pd.read_csv(url, index_col=False)
+</code></pre>
+
+<h4 id="matching-candidates-to-their-parties">Matching Candidates To Their Parties</h4>
+
+<pre><code class="language-python">parties = {'Rubio, Marco': 'Republican',
+           'Santorum, Richard J.': 'Republican',
+           'Perry, James R. (Rick)': 'Republican',
+           'Carson, Benjamin S.': 'Republican',
+           &quot;Cruz, Rafael Edward 'Ted'&quot;: 'Republican',
+           'Paul, Rand': 'Republican',
+           'Clinton, Hillary Rodham': 'Democrat',
+           'Sanders, Bernard': 'Democrat',
+           'Fiorina, Carly': 'Republican',
+           'Huckabee, Mike': 'Republican',
+           'Pataki, George E: .': 'Republican',
+           &quot;O'Malley, Martin Joseph&quot;: 'Democrat',
+           'Graham, Lindsey O.': 'Republican',
+           'Bush, Jeb': 'Republican',
+           'Trump, Donald J.': 'Republican',
+           'Jindal, Bobby': 'Republican',
+           'Christie, Christopher J.': 'Republican',
+           'Walker, Scott': 'Republican',
+           'Stein, Jill': &quot;Green Party&quot;,
+           'Webb, James Henry Jr.': 'Democrat',
+           'Kasich, John R.': 'Republican',
+           'Gilmore, James S III': 'Republican',
+           'Lessig, Lawrence': 'Democrat',
+           'Johnson, Gary': 'Libertarian',
+           'McMullin, Evan': 'Independent'}
+df['party'] = df.cand_nm.map(parties)
+</code></pre>
+
+<h4 id="filtering-out-refunds">Filtering Out Refunds</h4>
+
+<pre><code class="language-python">df = df[df.contb_receipt_amt &gt; 0]
+</code></pre>
+
+<h4 id="cleaning-up-occupations">Cleaning Up Occupations</h4>
+
+<pre><code class="language-python">occ_mapping = {
+    'INFORMATION REQUESTED PER BEST EFFORTS' : 'NOT PROVIDED',
+    'INFORMATION REQUESTED' : 'NOT PROVIDED',
+    'INFORMATION REQUESTED (BEST EFFORTS)' : 'NOT PROVIDED',
+    'C.E.O.': 'CEO'
+}
+
+f = lambda x: occ_mapping.get(x, x)
+df.contbr_occupation = df.contbr_occupation.map(f)
+</code></pre>
+
+<h4 id="create-a-dataframe-filtered-to-the-final-major-candidates">Create A DataFrame Filtered To The Final Major Candidates</h4>
+
+<pre><code class="language-python">dff = df[df.cand_nm.isin(['Trump, Donald J.','Clinton, Hillary Rodham'])]
+</code></pre>
+
+<h3 id="which-party-received-the-most-contributions">Which Party Received The Most Contributions?</h3>
+
+<pre><code class="language-python">party = df.groupby('party').contb_receipt_amt.sum().to_frame().reset_index()
+party.iplot(kind='pie', textinfo='value+percent', textposition='outside', labels='party', 
+            values='contb_receipt_amt', filename='fec-2016-party-contributions',
+           title='2016 Total Contributions(USD) By Party')
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/77.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-candidate-recieved-the-most-in-contributions">Which Candidate Recieved The Most In Contributions?</h3>
+
+<pre><code class="language-python">candidate = df.groupby('cand_nm').contb_receipt_amt.sum().sort_values(ascending=False)
+candidate.iplot(kind='bar', yTitle='Contributions(USD)', 
+    title='2016 Contributions(USD) By Presidential Candidate', filename='fec-2016-candidate-contributions')
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/79.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-occupations-donated-the-most-number-of-times">Which Occupations Donated The Most Number Of Times?</h3>
+
+<pre><code class="language-python">job = df['contbr_occupation'].value_counts()
+job[:25].iplot(kind='bar', filename='fec-2016-top-occupation-volume', yTitle='Number of Contributions', 
+               title=&quot;Top 25 Occupations By Number of Contributions&quot;)
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/81.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-occupations-donated-the-most">Which Occupations Donated The Most?</h3>
+
+<pre><code class="language-python">job = df.groupby('contbr_occupation').contb_receipt_amt.sum().sort_values(ascending=False)
+job[:25].iplot(kind='bar', filename='fec-2016-top-occupation-amounts', yTitle='Total Contribution', 
+               title=&quot;Top 25 Occupations By Contribution Ammount&quot;)
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/83.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-occupations-donated-the-most-to-hillary-clinton">Which Occupations Donated The Most to Hillary Clinton?</h3>
+
+<pre><code class="language-python">job = df[df['cand_nm'] == 'Clinton, Hillary Rodham'].groupby('contbr_occupation').contb_receipt_amt.sum().sort_values(ascending=False)
+job[:25].iplot(kind='bar', filename='fec-2016-top-occupation-amounts-clinton', yTitle='Total Contribution', 
+               title=&quot;Clinton Donors Top 25 Occupations By Contribution Ammount&quot;)
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/85.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-occupations-donated-the-most-to-donald-trump">Which Occupations Donated The Most to Donald Trump?</h3>
+
+<pre><code class="language-python">job = df[df['cand_nm'] == 'Trump, Donald J.'].groupby('contbr_occupation').contb_receipt_amt.sum().sort_values(ascending=False)
+job[:25].iplot(kind='bar', filename='fec-2016-top-occupation-amounts-trump', yTitle='Total Contribution', 
+               title=&quot;Trump Donors Top 25 Occupations By Contribution Ammount&quot;)
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/87.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-state-donated-the-most-number-of-times">Which State Donated The Most Number Of Times?</h3>
+
+<pre><code class="language-python">state = dff.contbr_st.value_counts().sort_values(ascending=False)[:20]
+state.iplot(kind='bar', filename='fec-2016-state-contributions-volume')
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/89.embed" height="525px" width="100%"></iframe>
+
+<h3 id="which-state-donated-the-most">Which State Donated The Most?</h3>
+
+<pre><code class="language-python">state_ammt = dff.groupby('contbr_st').contb_receipt_amt.sum().sort_values(ascending=False)[:20]
+state_ammt.iplot(kind='bar', filename='fec-2016-state-contributions-ammount')
+</code></pre>
+
+<iframe id="igraph" scrolling="no" style="border:none;" seamless="seamless" src="https://plot.ly/~mholtzscher/91.embed" height="525px" width="100%"></iframe>
+
+<hr />
+
+<p>The Jupyter Notebook for this work can be found on <a href="https://github.com/mholtzscher/2016_fec_presidential/blob/master/2016_presidential_contributions.ipynb">GitHub</a>.</p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=2016%20US%20Presedential%20Election%20Contributions%20%28Part%201%29&url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f21%2f2016_presidential_contributions%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f21%2f2016_presidential_contributions%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmholtzscher.github.io%2f2017%2f07%2f21%2f2016_presidential_contributions%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://mholtzscher.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+        <script src="https://mholtzscher.github.io/js/jquery.fitvids.js"></script>
+        <script src="https://mholtzscher.github.io/js/scripts.js"></script>
+    </body>
+</html>
+
