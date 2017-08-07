@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael Holtzscher</copyright>
-    <lastBuildDate>Wed, 26 Jul 2017 15:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 07 Aug 2017 15:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://mholtzscher.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>2016 US Presedential Election Contributions - Donations (Part 3)</title>
+      <link>https://mholtzscher.github.io/2017/08/07/2016_presidential_contributions_bins/</link>
+      <pubDate>Mon, 07 Aug 2017 15:00:00 -0500</pubDate>
+      
+      <guid>https://mholtzscher.github.io/2017/08/07/2016_presidential_contributions_bins/</guid>
+      <description>In this post I wanted to look at the distribution of donation sizes. I was curious if one of the candidates was better at getting small donations versus large contributions from organizations.
+Data is from the FEC
+import pandas as pd import plotly.plotly as py import cufflinks as cf  cf.set_config_file(theme=&#39;polar&#39;) cf.go_online()  Preparing The Data df = pd.read_csv(&amp;quot;P00000001-ALL.csv&amp;quot;, index_col=False)  Filtering Out Refunds df = df[df.contb_receipt_amt &amp;gt; 0]  Create A DataFrame Filtered To The Final Major Candidates df = df[df.</description>
+    </item>
     
     <item>
       <title>2016 US Presedential Election Contributions - Maps (Part 2)</title>
