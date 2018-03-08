@@ -2,20 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>2016 US Presedential Election Contributions (Part 1) &middot; Michael Holtzscher</title>
         <meta name="description" content="I recently came across this dataset from the Federal Election Commission and wanted to explore it a bit to see how money affected the election. Each plot aims to try and answer a question that I thought of while looking through the available data. This post is part 1 of my exploration and visualization of this dataset.
 Data is from the FEC
 import pandas as pd import numpy as np import plotly.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.25.1" />
+        <meta name="generator" content="Hugo 0.36" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <link rel="stylesheet" href="https://mholtzscher.github.io/dist/styles.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
         
     </head>
     <body>
@@ -41,10 +42,6 @@ ga('send', 'pageview');
                             </h1>
                         
                         <a class="button-square" href="https://mholtzscher.github.io/index.xml"><i class="fa fa-rss"></i></a>
-                        
-                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/mholtzscher">
-                                <i class="fa fa-twitter"></i>
-                            </a>
                         
                         
                         
@@ -85,7 +82,7 @@ ga('send', 'pageview');
         <span>by</span>
         <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
             <span itemprop="name">
-                <a href="" itemprop="url" rel="author">Michael Holtzscher</a>
+                <a href="#" itemprop="url" rel="author">Michael Holtzscher</a>
             </span>
         </span>
     </p>
@@ -299,7 +296,7 @@ state_ammt.iplot(kind='bar', filename='fec-2016-state-contributions-ammount')
                 </div>
 
                 <p class="footer-copyright">
-                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                    <span>&copy; 2018 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
                 </p>
                 <p class="footer-copyright">
                     <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
@@ -309,8 +306,12 @@ state_ammt.iplot(kind='bar', filename='fec-2016-state-contributions-ammount')
         </footer>
 
         <script src="https://mholtzscher.github.io/js/jquery-1.11.3.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
         <script src="https://mholtzscher.github.io/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
         <script src="https://mholtzscher.github.io/js/scripts.js"></script>
     </body>
 </html>

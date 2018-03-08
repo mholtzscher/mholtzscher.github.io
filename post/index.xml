@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael Holtzscher</copyright>
-    <lastBuildDate>Mon, 07 Aug 2017 15:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Wed, 07 Mar 2018 20:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://mholtzscher.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>What Is The Most Popular GitHub License?</title>
+      <link>https://mholtzscher.github.io/2018/03/07/github_licenses/</link>
+      <pubDate>Wed, 07 Mar 2018 20:00:00 -0500</pubDate>
+      
+      <guid>https://mholtzscher.github.io/2018/03/07/github_licenses/</guid>
+      <description>The data for this project is taken from Google&amp;rsquo;s public BigQuery datasets. The dataset can be easily accessed on Kaggle via the GitHub Repos dataset.
+Getting The Data import pandas as pd from google.cloud import bigquery from bq_helper import BigQueryHelper  bq = BigQueryHelper(&#39;bigquery-public-data&#39;, &#39;github_repos&#39;)  QUERY = &amp;quot;&amp;quot;&amp;quot; SELECT license, COUNT(license) as license_count FROM `bigquery-public-data.github_repos.licenses` GROUP BY license &amp;quot;&amp;quot;&amp;quot; df = bq.query_to_pandas_safe(QUERY)  ax = df.sort_values(&#39;license_count&#39;).plot.barh(x=&#39;license&#39;, y=&#39;license_count&#39;, legend=False) ax.</description>
+    </item>
     
     <item>
       <title>2016 US Presedential Election Contributions - Donations (Part 3)</title>
