@@ -8,7 +8,7 @@
 Getting The Data import pandas as pd from google.cloud import bigquery from bq_helper import BigQueryHelper  bq = BigQueryHelper(&#39;bigquery-public-data&#39;, &#39;github_repos&#39;)  QUERY = &quot;&quot;&quot; SELECT license, COUNT(license) as license_count FROM `bigquery-public-data.github_repos.licenses` GROUP BY license &quot;&quot;&quot; df = bq.query_to_pandas_safe(QUERY)  ax = df.sort_values(&#39;license_count&#39;).plot.barh(x=&#39;license&#39;, y=&#39;license_count&#39;, legend=False) ax.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.36" />
+        <meta name="generator" content="Hugo 0.37.1" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
