@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael Holtzscher</copyright>
-    <lastBuildDate>Wed, 07 Mar 2018 20:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 29 May 2018 06:00:00 -0600</lastBuildDate>
     
 	<atom:link href="https://mholtzscher.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Counting Syllables In English Words</title>
+      <link>https://mholtzscher.github.io/2018/05/29/syllables/</link>
+      <pubDate>Tue, 29 May 2018 06:00:00 -0600</pubDate>
+      
+      <guid>https://mholtzscher.github.io/2018/05/29/syllables/</guid>
+      <description>The Beginning When I started looking into how I could explore the Yelp data set on Kaggle I was really curious about the language complexity of the reviews. Did writing quality suffer when people wrote negative reviews? How complex did users make their sentences in their reviews? What kind of vocabulary did they use? Therefore, I knew my first course of action was to find ways to objectively calculate and evaluate these questions.</description>
+    </item>
     
     <item>
       <title>What Is The Most Popular GitHub License?</title>
@@ -72,15 +81,6 @@ Preparing The Data import pandas as pd import numpy as np import matplotlib.pypl
       
       <guid>https://mholtzscher.github.io/2017/07/10/chicago_homicides/</guid>
       <description>I have started learning Python and Pandas recently and was looking for a good dataset to play with to get my feet wet. I chose the Chicago crime data because it is large, structured, and mostly complete. The fact that little data is missing makes this a great way to get started exploring. The size also presents some fun challenges since it takes a decent amount of RAM(and patience) to load the ~63 million rows.</description>
-    </item>
-    
-    <item>
-      <title>Test Post Please Ignore</title>
-      <link>https://mholtzscher.github.io/2017/07/10/good-to-great/</link>
-      <pubDate>Mon, 10 Jul 2017 15:15:29 -0500</pubDate>
-      
-      <guid>https://mholtzscher.github.io/2017/07/10/good-to-great/</guid>
-      <description>This is my first post here and I hope to publish often! Check back later!</description>
     </item>
     
   </channel>

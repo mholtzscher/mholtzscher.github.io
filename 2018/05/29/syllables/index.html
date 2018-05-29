@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Counting Syllables In English Words &middot; Michael Holtzscher</title>
+        <meta name="description" content="The Beginning When I started looking into how I could explore the Yelp data set on Kaggle I was really curious about the language complexity of the reviews. Did writing quality suffer when people wrote negative reviews? How complex did users make their sentences in their reviews? What kind of vocabulary did they use? Therefore, I knew my first course of action was to find ways to objectively calculate and evaluate these questions.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.37.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://mholtzscher.github.io/dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        
+<script>
+    var doNotTrack = false;
+    if (!doNotTrack) {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-75497945-1', 'auto');
+        ga('send', 'pageview');
+    }
+</script>
+
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mholtzscher.github.io/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mholtzscher">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://www.linkedin.com/in/michael-holtzscher-813a79117/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:mholtz@protonmail.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Counting Syllables In English Words</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2018-05-29" itemprop="datePublished">Tue, May 29, 2018</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">Michael Holtzscher</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<h3 id="the-beginning">The Beginning</h3>
+
+<p>When I started looking into how I could explore the Yelp data set on <a href="https://www.kaggle.com/yelp-dataset/yelp-dataset">Kaggle</a> I was really curious about the language complexity of the reviews. Did writing quality suffer when people wrote negative reviews? How complex did users make their sentences in their reviews? What kind of vocabulary did they use? Therefore, I knew my first course of action was to find ways to objectively calculate and evaluate these questions.</p>
+
+<h3 id="text-readability">Text Readability</h3>
+
+<p>There are a lot of different ways to calculate the complexity of a corpus of text. So I started Googling and started my research with text readability scores. These scores and indexes have been around for decades with millions of dollars in research having been invested into them by the U.S. government and universities. The Flesch-Kincaid reading grade level was created during a contract to the U.S. Navy in 1975. The military wanted a system to score their manuals so that anyone serving could read the instructions for a piece of equipment.  Similar formulas have been developed to evaluate text for other areas of industry such as: insurance policies and health care documentation.</p>
+
+<h3 id="the-formulas">The Formulas</h3>
+
+<p>I started implementing these formulas on top of the amazing NLP platform <a href="https://spacy.io/">SpaCy</a>. I used SpaCy to perform the heavy lifting of splitting a sample of text into sentences and words. The Flesch-Kincaid formula, for example, uses words per sentence and syllables per word along with some calculated constants to determine the score and grade level.
+<img src="/syllables/flesch-kincaid.svg" alt="svg" />
+SpaCy makes the words per sentence calculation very simple and straight forward. However, calculating syllables is quite a challenging and complex problem. Many readability formulas use syllables in some portion of their equation. Flesch-Kincaid grade level/reading ease and SMOG index are just a few that rely on syllable counts in some manner.</p>
+
+<h3 id="syllables-by-hand">Syllables By Hand</h3>
+
+<p>As a human, counting syllables is a simple but time consuming task that can be performed using a few different methods as seen below. <a href="https://www.howmanysyllables.com/howtocountsyllables">Source</a></p>
+
+<ol>
+<li>The &ldquo;Listen Method&rdquo; Rules
+
+<ul>
+<li>Say the word.</li>
+<li>How many times do you hear A, E, I, O, or U as a separate sound?</li>
+<li>This is the number of syllables.</li>
+</ul></li>
+<li>The &ldquo;Chin Method&rdquo; Rules
+
+<ul>
+<li>Put your hand under your chin.</li>
+<li>Say the word.</li>
+<li>How many times does your chin touch your hand?</li>
+<li>This is the number of syllables.</li>
+</ul></li>
+<li>The &ldquo;Clap Method&rdquo; Rules
+
+<ul>
+<li>Clapping may help you find syllables.</li>
+<li>Say the word.</li>
+<li>Clap each time you hear A, E, I, O, or U as a separate sound.</li>
+<li>The number of claps is the number of syllables.</li>
+</ul></li>
+<li>The &ldquo;Robot Speak Method&rdquo; Rules
+
+<ul>
+<li>Make believe you are a robot from the year 2000.</li>
+<li>Say a word as this robot.</li>
+<li>Pay attention to the pauses you make.</li>
+<li>How many parts did you break your word into?</li>
+<li>This is the number of syllables.</li>
+</ul></li>
+<li>The &ldquo;Written Method&rdquo; Rules
+
+<ul>
+<li>Count the number of vowels (A, E, I, O, U) in the word.</li>
+<li>Add 1 every time the letter &lsquo;y&rsquo; makes the sound of a vowel (A, E, I, O, U).</li>
+<li>Subtract 1 for each silent vowel (like the silent &lsquo;e&rsquo; at the end of a word).</li>
+<li>Subtract 1 for each diphthong or triphthong in the word.</li>
+<li>Does the word end with &ldquo;le&rdquo; or &ldquo;les?&rdquo; Add 1 only if the letter before the &ldquo;le&rdquo; is a consonant.</li>
+<li>The number you get is the number of syllables in your word.</li>
+</ul></li>
+</ol>
+
+<p>These methods are very effective if you&rsquo;re a human but incredibly complex to implement programmatically since they rely on detecting sounds while speaking a word.</p>
+
+<h3 id="maybe-someone-has-already-done-this">Maybe Someone Has Already Done This?</h3>
+
+<p>I started my search by looking for a list of words and their syllable counts hoping someone had compiled a database for me. The closest thing I found was the <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU Pronouncing Dictionary</a>. However, this database shows the phenomes for the words rather than syllables. In some cases the phenomes align with syllables but this is not always the case. I then moved on to looking for an algorithm to programmatically count syllables and had mixed luck. I found a few very primitive implementations on StackOverflow but most were missing handling for many of English&rsquo;s edge cases.</p>
+
+<h3 id="syllapy">Syllapy</h3>
+
+<p>So I started piecing all these different algorithms together and this is where my package <a href="https://pypi.org/project/syllapy/">SyllaPy</a> began. My current implementation can correctly handle a large subset of English words with its rules but there still quite a few cases where they fail.</p>
+
+<script src="https://gist.github.com/mholtzscher/f753f9b893856eb15b26387f7b4a27cb.js"></script>
+
+<p>The English language is an amalgamation of words from other languages, so this means for every 10 words that fit my &ldquo;rules&rdquo; there will be at least one word that doesn&rsquo;t fit. While my current algorithm is fairly accurate, the perfectionist in me always wants MORE! To increase accuracy I have started compiling a database of known words and syllable counts. SyllaPy will lookup a word in the database before processing to see if I can get the correct answer immediately. The database has been built by scraping the web and gathering mostly small lists of syllable counts from education websites. Many universities/schools have small lists of words (less than 100) that are used in curriculum for elementary and middle school students so I have to hand check them before I merge them into the primary database. I will continue to use my algorithm as a backup to handle words that are not currently in the database in the meantime.</p>
+
+<p>The source code for Syllapy can be found <a href="https://github.com/mholtzscher/syllapy">here.</a></p>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Counting%20Syllables%20In%20English%20Words&url=https%3a%2f%2fmholtzscher.github.io%2f2018%2f05%2f29%2fsyllables%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmholtzscher.github.io%2f2018%2f05%2f29%2fsyllables%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmholtzscher.github.io%2f2018%2f05%2f29%2fsyllables%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Michael Holtzscher" href="https://mholtzscher.github.io/">Michael Holtzscher</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2018 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://mholtzscher.github.io/js/jquery-1.11.3.min.js"></script>
+        <script src="https://mholtzscher.github.io/js/jquery.fitvids.js"></script>
+        
+        
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        
+        
+        <script src="https://mholtzscher.github.io/js/scripts.js"></script>
+    </body>
+</html>
+
